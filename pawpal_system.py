@@ -1,17 +1,29 @@
-from dataclasses import dataclass, field
 from typing import List
-from datetime import date
+from typing import List, Optional
+from datetime import date, datetime, timedelta
+from datetime import date, timedelta
+from dataclasses import dataclass, field
 
 # This file defines the core classes for the PawPal system: Owner, Pet, Task, and Scheduler. These classes will be used to manage pet care tasks and schedules.
 @dataclass
 class Task:
     title: str
     due_date: date
+    time: str  # "HH:MM"
     completed: bool = False
+    frequency: Optional[str] = None  # "daily", "weekly", or None
 
     def mark_complete(self):
-        """Mark the task as completed."""
+        """Mark task complete and return next task if recurring."""
         self.completed = True
+
+        if self.frequency == "daily":
+            return Task(self.title, self.due_date + timedelta(days=1), self.time, False, "daily")
+
+        if self.frequency == "weekly":
+            return Task(self.title, self.due_date + timedelta(days=7), self.time, False, "weekly")
+
+        return None
 
 
 @dataclass
@@ -65,5 +77,30 @@ class Scheduler:
     def get_all_tasks(self) -> List[Task]:
         """Return all tasks."""
         return self.tasks
+    from datetime import datetime
 
+    def sort_by_time(self, tasks: List[Task]) -> List[Task]:
+        """Return tasks sorted by time."""
+        return sorted(tasks, key=lambda t: datetime.strptime(t.time, "%H:%M"))
+
+    def filter_by_status(self, completed: bool) -> List[Task]:
+        """Filter tasks by completion status."""
+        return [t for t in self.tasks if t.completed == completed]
+
+    def detect_conflicts(self) -> List[str]:
+        """Detect tasks with same date and time."""
+        warnings = []
+        seen = {}
+
+        for task in self.tasks:
+            key = (task.due_date, task.time)
+
+            if key in seen:
+                warnings.append(
+                    f"⚠ Conflict: '{task.title}' conflicts with '{seen[key].title}' at {task.time}"
+                )
+            else:
+                seen[key] = task
+
+        return warnings
 # Used co-pilot to generate the above code based on the requirements for the PawPal system. This is just a starting point and can be expanded with more features and logic as needed.
