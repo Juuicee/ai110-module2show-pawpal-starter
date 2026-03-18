@@ -10,7 +10,8 @@ class Task:
     completed: bool = False
 
     def mark_complete(self):
-        pass
+        """Mark the task as completed."""
+        self.completed = True
 
 
 @dataclass
@@ -20,10 +21,12 @@ class Pet:
     tasks: List[Task] = field(default_factory=list)
 
     def add_task(self, task: Task):
-        pass
+        """Add a task to this pet."""
+        self.tasks.append(task)
 
     def get_tasks(self) -> List[Task]:
-        pass
+        """Return all tasks for this pet."""
+        return self.tasks
 
 
 class Owner:
@@ -32,13 +35,17 @@ class Owner:
         self.pets: List[Pet] = []
 
     def add_pet(self, pet: Pet):
-        pass
+        """Add a pet."""
+        self.pets.append(pet)
 
     def remove_pet(self, pet: Pet):
-        pass
+        """Remove a pet."""
+        if pet in self.pets:
+            self.pets.remove(pet)
 
     def get_pets(self) -> List[Pet]:
-        pass
+        """Return all pets."""
+        return self.pets
 
 
 class Scheduler:
@@ -46,10 +53,13 @@ class Scheduler:
         self.tasks: List[Task] = []
 
     def add_task(self, task: Task):
-        pass
+        """Add a task manually."""
+        self.tasks.append(task)
 
     def get_tasks_for_day(self, day: date) -> List[Task]:
-        pass
+        """Filter tasks by date."""
+        return [task for task in self.tasks if task.due_date == day]
 
     def get_all_tasks(self) -> List[Task]:
-        pass
+        """Return all tasks."""
+        return self.tasks
