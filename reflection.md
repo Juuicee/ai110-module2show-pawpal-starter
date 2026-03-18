@@ -69,3 +69,11 @@
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+Data Flow: 
+The owner object stores multiple pet objects.
+Each Pet stores its own list of Task Objects.
+In main.py, tasks are added to pets.
+The Scheduler collects tasks by looping through:
+ - Owner -> Pets -> Tasks
+The scheduler then filters tasks by date and prints the schedule.

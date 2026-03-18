@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List
 from datetime import date
 
-
+# This file defines the core classes for the PawPal system: Owner, Pet, Task, and Scheduler. These classes will be used to manage pet care tasks and schedules.
 @dataclass
 class Task:
     title: str
@@ -56,10 +56,14 @@ class Scheduler:
         """Add a task manually."""
         self.tasks.append(task)
 
+# In a real implementation, this would contain the scheduling logic to prioritize and order tasks based on constraints. For now, it just stores tasks and can filter them by date.  
     def get_tasks_for_day(self, day: date) -> List[Task]:
         """Filter tasks by date."""
         return [task for task in self.tasks if task.due_date == day]
+# This method filters tasks based on a specific date.  It returns only tasks that match the given day.
 
     def get_all_tasks(self) -> List[Task]:
         """Return all tasks."""
         return self.tasks
+
+# Used co-pilot to generate the above code based on the requirements for the PawPal system. This is just a starting point and can be expanded with more features and logic as needed.
